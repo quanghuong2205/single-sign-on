@@ -1,0 +1,155 @@
+.wrapper {
+  padding: 30px;
+}
+
+.back {
+  position: fixed;
+  top: 7px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 20px;
+  font-size: 1.6rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+
+  & svg {
+    height: 16px;
+  }
+
+  & span {
+    position: relative;
+    top: -1px;
+  }
+
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+}
+
+.inner {
+  text-align: center;
+}
+
+.header {
+  margin-top: 50px;
+}
+
+.logo {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+
+  &-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+}
+
+.heading {
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 12px 0;
+}
+
+.sub {
+  width: min(400px, 90%);
+  margin: 0 auto;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  opacity: 0.6;
+
+  &--warning {
+    color: #f33a58;
+    opacity: 1;
+  }
+}
+
+.footer {
+  margin-top: 10px;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.modes {
+  font-size: 1.4rem;
+  line-height: 1.8;
+  padding: 24px 16px 0;
+
+  & button {
+    font-weight: 600;
+    color: #f05123;
+    text-decoration: underline;
+    display: inline-block;
+    margin-left: 4px;
+  }
+}
+
+.forgotPassword {
+  display: inline-block;
+  margin-top: 10px;
+  color: #f05123;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.policy {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 16px;
+  width: min(400px, 100%);
+  font-size: 1.1rem;
+  color: #666;
+
+  & a {
+    text-decoration: underline;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+  max-width: 360px;
+  margin: 0 auto;
+  margin-top: 24px;
+}
+
+.strategy {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 44px;
+  padding-left: 16px;
+  border: 2px solid #dce0e3;
+  border-radius: 44px;
+  background-color: #fff;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #dce0e3;
+  }
+
+  &-icon {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    left: 16px;
+  }
+
+  &-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 40px;
+  }
+}
