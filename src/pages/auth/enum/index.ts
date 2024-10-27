@@ -23,3 +23,16 @@ export const AUTH_TEXT: { [key in AuthModeType]: AuthTextType } = {
     submitTitle: 'Đặt lại mật khẩu',
   },
 };
+
+export const PASSWORD_LEVEL: PasswordLevelType = {
+  characterTypes: ['lowercase', 'uppercase', 'number', 'symbol'],
+  minLength: 8,
+  label: {
+    0: 'Mật khẩu quá yếu',
+    1: 'Mật khấu yếu',
+    2: 'Mật khẩu trung bình',
+    3: 'Mật khẩu mạnh',
+  },
+};
+
+export const MAX_PASSWORD_LEVEL = 3;

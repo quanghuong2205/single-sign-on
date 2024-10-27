@@ -20,8 +20,8 @@ function LocalSignUpForm() {
         />
 
         <div>
-          <FormFiled placeholder="Mật khẩu" errorText="Trường này không được để trống" />
-          <PasswordLevel />
+          <FormFiled isError placeholder="Mật khẩu" errorText="Trường này không được để trống" />
+          <PasswordLevel password="hello@Hc" />
         </div>
 
         <FormFiled placeholder="Nhập mã xác nhận" errorText="Trường này không được để trống" isDisable isOtpInput />

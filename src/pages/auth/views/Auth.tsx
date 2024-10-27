@@ -10,7 +10,7 @@ import { AUTH_TEXT } from '../enum';
 
 function Auth() {
   // states
-  const [authMode, setAuthMode] = useState<AuthModeType>('SI'); // SI = sign in, SU = sign up, FP = forgot password
+  const [authMode, setAuthMode] = useState<AuthModeType>('SU'); // SI = sign in, SU = sign up, FP = forgot password
   const [isLocalAuth, setIsLocalAuth] = useState(true); // auth with email/phone number
 
   // constant values

@@ -93,3 +93,7 @@ export const listenEvent = (eventName: string, callback: (e: Event) => void, con
   context.addEventListener(eventName, callback);
   return () => context.removeEventListener(eventName, callback);
 };
+
+export const generateArrayRange = (start: number, stop: number, step: number = 1): Array<number> => {
+  return Array.from({ length: Math.ceil((stop - start) / step) }, (_, i) => start + i * step);
+};

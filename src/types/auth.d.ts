@@ -16,3 +16,10 @@ type AuthTextType = {
   hint?: string;
   linkTitle?: string;
 };
+
+type CharType = 'lowercase' | 'uppercase' | 'number' | 'symbol';
+type PasswordLevelType = {
+  characterTypes: Array<CharType>;
+  minLength: number;
+  label: { [key: number]: string };
+};
