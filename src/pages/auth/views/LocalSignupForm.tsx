@@ -1,36 +1,69 @@
-import formStyles from '../scss/form.module.scss';
-import classNames from 'classnames';
+import { useMemo } from 'react';
+import { FieldErrors } from 'react-hook-form';
+
 import FormFiled from '../components/FormField';
 import PasswordLevel from '../components/PasswordLevel';
-import { AUTH_TEXT } from '../enum';
+import OtpInput from '../components/OtpInput';
 
-const disable = true;
+import { isDisabled } from '../utils';
 
-function LocalSignUpForm() {
+interface ILocalSignUpFormProps {
+  errors: FieldErrors<SignupFieldValuesType>;
+  values: Partial<SignupFieldValuesType>;
+  isSubmitting: boolean;
+  onSetFieldValue: (name: string, value: string) => void;
+}
+
+const LocalSignUpForm: React.FC<ILocalSignUpFormProps> = ({ onSetFieldValue, errors, values, isSubmitting }) => {
+  // flags
+  const isOtpDisabled = useMemo(() => {
+    return isDisabled(['email', 'password', 'username'], errors, values);
+  }, [values, errors]);
+
   return (
-    <form action="#" autoComplete="off">
+    <>
       <div>
-        <FormFiled label="Tên của bạn" placeholder="Họ và tên" errorText="Trường này không được để trống" />
+        <FormFiled
+          label="Tên của bạn"
+          placeholder="Họ và tên"
+          errorText={errors?.username?.message}
+          name="username"
+          onSetFieldValue={onSetFieldValue}
+          isInitialFocus
+          isDisabled={isSubmitting}
+        />
 
         <FormFiled
           label="Email của bạn"
           rightButton={{ title: 'Đăng nhập với số điện thoại' }}
           placeholder="Địa chỉ email"
-          errorText="Trường này không được để trống"
+          errorText={errors?.email?.message}
+          name="email"
+          onSetFieldValue={onSetFieldValue}
+          isDisabled={isSubmitting}
         />
 
         <div>
-          <FormFiled isError placeholder="Mật khẩu" errorText="Trường này không được để trống" />
-          <PasswordLevel password="hello@Hc" />
+          <FormFiled
+            placeholder="Mật khẩu"
+            type="password"
+            errorText={errors?.password?.message}
+            name="password"
+            onSetFieldValue={onSetFieldValue}
+            isDisabled={isSubmitting}
+          />
+          <PasswordLevel password={values?.password ?? ''} />
         </div>
-
-        <FormFiled placeholder="Nhập mã xác nhận" errorText="Trường này không được để trống" isDisable isOtpInput />
+        <OtpInput
+          name="otp"
+          onSetFieldValue={onSetFieldValue}
+          errorText={errors?.otp?.message}
+          isInputDisabled={isSubmitting}
+          isActDisabled={isOtpDisabled || isSubmitting}
+        />
       </div>
-      <button disabled={disable} className={classNames(formStyles.submit, disable && formStyles['submit-disable'])}>
-        {AUTH_TEXT['SU'].submitTitle}
-      </button>
-    </form>
+    </>
   );
-}
+};
 
 export default LocalSignUpForm;

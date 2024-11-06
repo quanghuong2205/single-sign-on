@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import authStyles from '../scss/auth.module.scss';
-console.log(authStyles);
 const logoPath =
   'https://static.vecteezy.com/system/resources/thumbnails/036/496/605/small_2x/ai-generated-a-cat-head-logo-designed-in-the-esports-illustration-style-set-against-a-blank-background-png.png';
 

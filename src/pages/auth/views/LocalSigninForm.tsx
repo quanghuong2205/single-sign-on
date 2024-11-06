@@ -1,31 +1,40 @@
-import formStyles from '../scss/form.module.scss';
-import classNames from 'classnames';
 import FormFiled from '../components/FormField';
 import Remember from '../components/Remember';
-import { AUTH_TEXT } from '../enum';
+import { FieldErrors } from 'react-hook-form';
 
-const disable = true;
+interface ILocalSignInFormProps {
+  errors: FieldErrors<SigninFieldValuesType>;
+  isSubmitting: boolean;
+  onSetFieldValue: (name: string, value: string) => void;
+}
 
-function LocalSignInForm() {
+const LocalSignInForm: React.FC<ILocalSignInFormProps> = ({ errors, onSetFieldValue, isSubmitting }) => {
   return (
-    <form action="#" autoComplete="off" onSubmit={(e) => e.preventDefault()}>
+    <>
       <div>
         <FormFiled
           label="Tên đăng nhập"
           rightButton={{ title: 'Đăng nhập với số điện thoại' }}
           placeholder="Email hoặc username"
-          errorText="Trường này không được để trống"
-          isError
+          errorText={errors?.email?.message}
+          name="email"
+          onSetFieldValue={onSetFieldValue}
+          isInitialFocus
+          isDisabled={isSubmitting}
         />
 
-        <FormFiled isError placeholder="Mật khẩu" errorText="Trường này không được để trống" type="password" />
+        <FormFiled
+          placeholder="Mật khẩu"
+          errorText={errors?.password?.message}
+          type="password"
+          name="password"
+          onSetFieldValue={onSetFieldValue}
+          isDisabled={isSubmitting}
+        />
       </div>
       <Remember />
-      <button disabled={disable} className={classNames(formStyles.submit, disable && formStyles['submit-disable'])}>
-        {AUTH_TEXT['SI'].submitTitle}
-      </button>
-    </form>
+    </>
   );
-}
+};
 
 export default LocalSignInForm;
