@@ -1,23 +1,5 @@
-@keyframes shake {
-  0% {
-    transform: translate(0);
-  }
-  25% {
-    transform: translate(-8px);
-  }
-  50% {
-    transform: translate(8px);
-  }
-  75% {
-    transform: translate(-8px);
-  }
-  100% {
-    transform: translate(0);
-  }
-}
-
 .wrapper {
-  margin-top: 10px;
+  padding-top: 10px;
   text-align: initial;
 }
 
@@ -56,11 +38,15 @@
 
   &--error {
     border-color: #f33a58;
+    color: #f33a58;
     background-color: #ff00001a;
   }
 
   &--disable {
     background: #16182329;
+  }
+  &--disable input {
+    cursor: not-allowed;
   }
 
   & input {
@@ -82,26 +68,30 @@
   translate: 0 -50%;
   color: #666;
 
-  & svg {
-    width: 16px;
-    height: 14px;
-    flex-shrink: 0;
-  }
-
   &--error {
     color: #f33a58;
-    animation: shake 0.5s ease-in-out;
+  }
+
+  & svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
   }
 }
 
 .message {
-  margin: 0px 0 0px 8px;
-  padding: 8px 0;
+  margin: 8px 0 8px 8px;
   display: block;
   color: #f33a58;
   font-size: 1.4rem;
   font-weight: 500;
   line-height: 1.5;
+  text-align: left;
+
+  &--help {
+    color: #02875a;
+    font-style: italic;
+  }
 }
 
 .rightButton {
@@ -112,7 +102,6 @@
   min-width: 140px;
   margin: 1px;
   border-radius: 44px;
-  font-size: 1.4rem;
   font-weight: 600;
   white-space: nowrap;
 
@@ -127,5 +116,12 @@
 
   & span {
     font-variant-numeric: tabular-nums;
+    font-size: 1.3rem;
+  }
+
+  & svg {
+    width: 13px;
+    height: 13px;
+    margin-left: 8px;
   }
 }
