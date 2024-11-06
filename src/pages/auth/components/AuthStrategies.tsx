@@ -1,4 +1,4 @@
-import { FacebookIcon, GoogleIcon, UserIcon } from '@/components';
+import { FacebookIcon, GithubIcon, GoogleIcon } from '@/components';
 import authStyles from '../scss/auth.module.scss';
 
 interface IAuthStrategiesProps {
@@ -24,7 +24,7 @@ const AuthStrategies: React.FC<IAuthStrategiesProps> = ({ authMode }) => {
 
       <button className={authStyles.strategy}>
         <div className={authStyles['strategy-icon']}>
-          <UserIcon />
+          <GithubIcon />
         </div>
         <span className={authStyles['strategy-title']}>{authMode} với Github</span>
       </button>
