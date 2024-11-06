@@ -1,6 +1,7 @@
-export const WarningIcon = () => {
+export const WarningIcon: React.FC<IIconProps> = ({ cls }) => {
   return (
     <svg
+      className={cls}
       aria-hidden="true"
       focusable="false"
       data-prefix="fas"

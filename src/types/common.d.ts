@@ -10,3 +10,9 @@ interface RouteProps {
   component: React.FC;
   middleware?: any;
 }
+
+interface IIconProps {
+  cls?: string;
+  width?: number;
+  height?: number;
+}

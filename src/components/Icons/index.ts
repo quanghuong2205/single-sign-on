@@ -6,3 +6,4 @@ export * from './Facebook';
 export * from './Google';
 export * from './Github';
 export * from './User';
+export * from './Loading';
