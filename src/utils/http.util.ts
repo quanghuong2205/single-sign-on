@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { STATUS_CODE_SUCCESS } from '@/constains';
+import { STATUS_CODE_SUCCESS } from '@/enum';
 import { APP_CONFIG } from '@/configs/app.key';
 
 interface IError {

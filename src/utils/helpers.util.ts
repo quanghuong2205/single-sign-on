@@ -46,8 +46,9 @@ export const isEmpty = (value: any): boolean => {
   return (
     value === undefined ||
     value === null ||
+    (typeof value === 'string' && value.trim().length === 0) ||
     (typeof value === 'object' && Object.keys(value).length === 0) ||
-    (typeof value === 'string' && value.trim().length === 0)
+    (typeof value === 'object' && Array.isArray(value) && value.length === 0)
   );
 };
 
@@ -92,4 +93,22 @@ export const deleteEmptyPropertiesObj = (obj: any) => {
 export const listenEvent = (eventName: string, callback: (e: Event) => void, context: Window | Document = document) => {
   context.addEventListener(eventName, callback);
   return () => context.removeEventListener(eventName, callback);
+};
+
+export const generateArrayRange = (start: number, stop: number, step: number = 1): Array<number> => {
+  return Array.from({ length: Math.ceil((stop - start) / step) }, (_, i) => start + i * step);
+};
+
+export const selectProps = (obj: { [key: string]: any }, selectors: Array<string>): { [key: string]: any } => {
+  return Object.keys(obj).reduce<{ [key: string]: any }>((acc, cur) => {
+    return selectors.includes(cur) ? { ...acc, [cur]: obj[cur] } : acc;
+  }, {});
+};
+
+export const hasProps = (obj: { [key: string]: any }, props: Array<string>, type: 'all' | 'some' = 'some'): boolean => {
+  const result = Object.keys(obj).reduce<string[]>((acc, cur) => {
+    return props.includes(cur) ? [...acc, cur] : acc;
+  }, []);
+
+  return type === 'all' ? result.length === props.length : result.length !== 0;
 };

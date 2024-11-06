@@ -15,7 +15,7 @@ module.exports = {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
       typescript: {
-        alwaysTryTypes: true, // Luôn cố gắng resolve types từ node_modules, nếu có
+        alwaysTryTypes: true,
         project: path.resolve(__dirname, './tsconfig.json'),
       },
       webpack: {

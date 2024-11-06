@@ -1,10 +1,90 @@
-html body {
+@use './_reset';
+
+html:root {
+  --system-ui: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
 }
 
 body {
-  margin: 0;
+  font-size: 1.6rem;
+  font-family: var(--system-ui);
+  line-height: 1.48;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  -webkit-user-drag: none;
+  -ms-content-zooming: none;
+}
+
+button,
+input {
+  background-color: transparent;
+  background: transparent;
+  outline: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
 }
 
 fieldset {
   border: 0;
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(0);
+  }
+  25% {
+    transform: translate(-8px);
+  }
+  50% {
+    transform: translate(8px);
+  }
+  75% {
+    transform: translate(-8px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spinner linear 1s infinite;
+  will-change: transform;
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+  will-change: transform;
 }
