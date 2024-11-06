@@ -1,7 +1,10 @@
+import { useEffect, useId, useRef, useState } from 'react';
+import classNames from 'classnames';
+
 import { EyeIcon, WarningIcon } from '@/components';
 import fieldStyles from '../scss/form-field.module.scss';
-import classNames from 'classnames';
-import { useId, useState } from 'react';
+
+import { listenEvent } from '@/utils';
 
 type IRightButton = {
   title: string;
@@ -9,40 +12,70 @@ type IRightButton = {
 };
 
 interface IFormFieldProps {
+  name: string;
   label?: string;
   rightButton?: IRightButton;
   errorText?: string;
   type?: 'text' | 'password';
-  isError?: boolean;
-  isDisable?: boolean;
-  isOtpInput?: boolean;
+  isDisabled?: boolean;
   placeholder?: string;
+  isInitialFocus?: boolean;
+  onSetFieldValue: (name: string, value: string) => void;
 }
 
 const FormField: React.FC<IFormFieldProps> = ({
+  name,
   label,
   rightButton,
   errorText,
-  isDisable,
-  isError,
-  isOtpInput,
+  isDisabled,
   placeholder,
   type = 'text',
+  isInitialFocus,
+  onSetFieldValue,
 }) => {
   // states
   const fieldId = useId();
-  const [isVisiblePassword, setIsVisiblePassword] = useState(false);
+  const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
+  const [isVisibleEye, setIsVisibleEye] = useState<boolean>(false);
+
+  // refs
+  const inputRef = useRef<HTMLInputElement>(null);
+  const inputWrapperref = useRef<HTMLDivElement>(null);
 
   // flags
   const isPasswordField = type === 'password';
+  const isVisibleHeader = label || rightButton;
 
   // handlers
   const handleTogglePassword = () => setIsVisiblePassword((prev) => !prev);
-  const handleBlurInput = () => isPasswordField && isVisiblePassword && handleTogglePassword();
+  const handleBlurInput = () => {
+    setIsVisibleEye(false);
+    setIsVisiblePassword(false);
+  };
+  const handleFocusInput = () => setIsVisibleEye(true);
+
+  // effects
+  useEffect(() => {
+    if (inputRef.current) {
+      isInitialFocus && inputRef.current?.focus();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isPasswordField) return;
+    const event = listenEvent('click', (e: any) => {
+      if (!isVisibleEye || !inputWrapperref.current) return;
+      if (!inputWrapperref.current.contains(e.target)) {
+        handleBlurInput();
+      }
+    });
+    return event;
+  }, [isVisibleEye]);
 
   return (
     <div className={fieldStyles.wrapper}>
-      {(label || rightButton) && (
+      {isVisibleHeader && (
         <div className={fieldStyles.header}>
           {label && <label htmlFor={fieldId}>{label}</label>}
           {rightButton && <button onClick={rightButton?.onClick}>{rightButton.title}</button>}
@@ -51,41 +84,40 @@ const FormField: React.FC<IFormFieldProps> = ({
 
       <div
         className={classNames(fieldStyles.inputWrap, {
-          [fieldStyles['inputWrap--error']]: isError,
-          [fieldStyles['inputWrap--disable']]: isDisable,
+          [fieldStyles['inputWrap--error']]: !!errorText,
+          [fieldStyles['inputWrap--disable']]: isDisabled,
         })}
+        ref={inputWrapperref}
       >
         <input
+          ref={inputRef}
           id={fieldId}
-          disabled={isDisable}
-          placeholder={placeholder}
+          name={name}
+          autoComplete="off"
           spellCheck="false"
+          disabled={isDisabled}
           type={isVisiblePassword ? 'text' : type}
-          onBlur={handleBlurInput}
+          placeholder={placeholder}
+          onChange={(event) => onSetFieldValue(name, event.target.value)}
+          onFocus={handleFocusInput}
         />
 
-        {isError && !isPasswordField && (
+        {!!errorText && !isPasswordField && (
           <div className={classNames(fieldStyles.rightIcon, fieldStyles['rightIcon--error'])}>
-            <WarningIcon />
+            <WarningIcon cls="shake" />
           </div>
         )}
 
-        {isPasswordField && (
-          <button className={classNames(fieldStyles.rightIcon)} onClick={handleTogglePassword}>
+        {isPasswordField && isVisibleEye && (
+          <button
+            className={classNames(fieldStyles.rightIcon, !!errorText && fieldStyles['rightIcon--error'])}
+            onClick={handleTogglePassword}
+          >
             <EyeIcon isOpen={isVisiblePassword} />
           </button>
         )}
-
-        {isOtpInput && (
-          <button
-            disabled={isDisable}
-            className={classNames(fieldStyles.rightButton, isDisable && fieldStyles['rightButton--disable'])}
-          >
-            <span>Gửi mã</span>
-          </button>
-        )}
       </div>
-      {isError && errorText && <div className={fieldStyles.message}>{errorText}</div>}
+      {!!errorText && <div className={fieldStyles.message}>{errorText}</div>}
     </div>
   );
 };
