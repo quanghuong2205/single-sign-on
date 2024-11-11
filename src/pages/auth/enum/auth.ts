@@ -1,4 +1,7 @@
 export const AUTH_MODE_PARAM_KEY = 'mode';
+export const BLOCKED_MODES_FROM_URL: AuthModeType[] = ['RP'];
+
+export const DEFAULT_AUTH_MODE: AuthModeType = 'SI';
 
 export const AUTH_TEXT: { [key in AuthModeType]: AuthTextType } = {
   SI: {

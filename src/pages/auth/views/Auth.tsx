@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import classNames from 'classnames';
@@ -13,26 +13,27 @@ import { Header } from '../layout';
 import authStyles from '../scss/auth.module.scss';
 import formStyles from '../scss/form.module.scss';
 
-import { AUTH_MODE_PARAM_KEY, AUTH_TEXT } from '../enum';
+import { AUTH_MODE_PARAM_KEY, AUTH_TEXT, BLOCKED_MODES_FROM_URL, DEFAULT_AUTH_MODE } from '../enum';
 import { AUTH_RESOLVERS } from '../models';
-
-const DEFAULT_AUTH_MODE: AuthModeType = 'SI';
 
 function Auth() {
   // router
   const [searchParams, setSearchParams] = useSearchParams({ mode: DEFAULT_AUTH_MODE });
 
-  // refs
-  const authModeStack = useRef<AuthModeType[]>([]);
-
   // states
   const [authMode, setAuthMode] = useState<AuthModeType>(() => {
     const authModeParam = searchParams.get(AUTH_MODE_PARAM_KEY) as AuthModeType;
-    const initialMode = authModeParam === 'RP' ? DEFAULT_AUTH_MODE : authModeParam;
-    authModeStack.current = [initialMode];
+    const initialMode = BLOCKED_MODES_FROM_URL.includes(authModeParam) ? DEFAULT_AUTH_MODE : authModeParam;
     return initialMode;
-  }); // SI = sign in, SU = sign up, FP = forgot password, RP: reset password
+  });
   const [isInLocalAuthMode, setIsInLocalAuthMode] = useState(false); // auth with email/phone number
+
+  // refs
+  const authModeStack = useRef<AuthModeType[]>([]);
+  console.log(authModeStack.current);
+
+  // constaint values
+  const authText = AUTH_TEXT[authMode];
 
   // flags
   const isShownBackBtn = authMode !== 'SI' || isInLocalAuthMode;
@@ -50,36 +51,37 @@ function Auth() {
     mode: 'onChange',
   });
 
-  // constant values
-  const authText = AUTH_TEXT[authMode];
+  // form values
   const formValues = getValues();
 
   // handlers
   const handleToggleLocalAuthMode = () => setIsInLocalAuthMode((prev) => !prev);
-  const handleApplyAuthModeToUrl = (mode: AuthModeType) => {
-    if (mode !== 'RP') {
+  const handleAuthModeChange = (mode: AuthModeType) => {
+    if (!BLOCKED_MODES_FROM_URL.includes(mode)) {
       setSearchParams({ mode });
-      resetForm({});
     }
+    if (mode !== 'RP') resetForm({});
+
+    isInLocalAuthMode && handleToggleLocalAuthMode();
+    setAuthMode(mode);
   };
 
   const handleSwitchAuthMode = (mode: AuthModeType) => () => {
-    if (mode !== 'RP') {
+    if (mode === DEFAULT_AUTH_MODE) {
+      authModeStack.current = [DEFAULT_AUTH_MODE];
+    } else if (mode !== 'RP') {
       authModeStack.current.push(mode);
     }
-    setAuthMode(mode);
-    isInLocalAuthMode && handleToggleLocalAuthMode();
-    handleApplyAuthModeToUrl(mode);
+
+    handleAuthModeChange(mode);
   };
 
   const handleBackAuthMode = () => {
-    authModeStack.current.pop();
-
-    const isEmptyStack = authModeStack.current.length === 0;
-    const currentMode = isEmptyStack ? DEFAULT_AUTH_MODE : authModeStack.current[authModeStack.current.length - 1];
-
-    setAuthMode(currentMode);
-    handleApplyAuthModeToUrl(currentMode);
+    if (authModeStack.current.length > 1) {
+      authModeStack.current.pop();
+    }
+    const currentMode = authModeStack.current[authModeStack.current.length - 1];
+    handleAuthModeChange(currentMode);
   };
 
   const handleSetFieldValue = (name: string, value: string) => {
@@ -96,6 +98,14 @@ function Auth() {
       '*',
     );
   };
+
+  useEffect(() => {
+    if (authMode !== DEFAULT_AUTH_MODE) {
+      authModeStack.current = [DEFAULT_AUTH_MODE, authMode];
+      return;
+    }
+    authModeStack.current = [DEFAULT_AUTH_MODE];
+  }, []);
 
   return (
     <div className={authStyles.wrapper}>
