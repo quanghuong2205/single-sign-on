@@ -91,11 +91,16 @@ const OtpInput: React.FC<IOtpInputProps> = ({
           type="text"
           name={name}
           onChange={(event) => onSetFieldValue(name, event.target.value)}
+          className={classNames(isDisabled.input && 'disabled')}
         />
 
         <button
           disabled={isDisabled.act}
-          className={classNames(fieldStyles.rightButton, isDisabled.act && fieldStyles['rightButton--disable'])}
+          className={classNames(
+            fieldStyles.rightButton,
+            'secondary-gradient-button',
+            isDisabled.act && fieldStyles['rightButton--disable'],
+          )}
           onClick={handleSendVerification}
         >
           {!isCountingdown ? (

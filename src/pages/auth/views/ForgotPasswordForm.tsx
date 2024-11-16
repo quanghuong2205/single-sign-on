@@ -103,8 +103,8 @@ const ForgotPasswordForm: React.FC<IForgotPasswordFormProps> = ({
       <button
         disabled={isSubmitDisabled || isSubmitting}
         onClick={handleSubmit}
-        className={classNames(formStyles.submit, {
-          [formStyles['submit-disable']]: isSubmitDisabled || isSubmitting,
+        className={classNames(formStyles.submit, 'primary-gradient-button', {
+          disabled: isSubmitDisabled || isSubmitting,
         })}
       >
         {!isSubmitting ? AUTH_TEXT[authMode].submitTitle : <LoadingIcon cls="spinner" />}

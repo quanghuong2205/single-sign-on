@@ -124,7 +124,7 @@ function Auth() {
           {!isInLocalAuthMode && !isInForgotPasswordMode && (
             <>
               <AuthStrategies authMode={authText.mode} />
-              <button className={authStyles.strategy} onClick={handleToggleLocalAuthMode}>
+              <button className={classNames(authStyles.strategy, 'outline-button')} onClick={handleToggleLocalAuthMode}>
                 <div className={authStyles['strategy-icon']}>
                   <UserIcon />
                 </div>
@@ -165,8 +165,8 @@ function Auth() {
                 <button
                   disabled={!isValid || isSubmitting}
                   onClick={HandleSubmitHookForm(handleSubmit)}
-                  className={classNames(formStyles.submit, {
-                    [formStyles['submit-disable']]: !isValid || isSubmitting,
+                  className={classNames(formStyles.submit, 'primary-gradient-button', {
+                    disabled: !isValid || isSubmitting,
                   })}
                 >
                   {!isSubmitting ? authText.submitTitle : <LoadingIcon cls="spinner" />}
@@ -182,9 +182,14 @@ function Auth() {
             <>
               <p className={authStyles.modes}>
                 <span>{authText.hint}</span>
-                <button onClick={handleSwitchAuthMode(authMode === 'SI' ? 'SU' : 'SI')}>{authText.linkTitle}</button>
+                <button className="text-button" onClick={handleSwitchAuthMode(authMode === 'SI' ? 'SU' : 'SI')}>
+                  {authText.linkTitle}
+                </button>
               </p>
-              <button onClick={handleSwitchAuthMode('FP')} className={authStyles.forgotPassword}>
+              <button
+                onClick={handleSwitchAuthMode('FP')}
+                className={classNames(authStyles.forgotPassword, 'text-button')}
+              >
                 Quên mật khẩu?
               </button>
             </>
