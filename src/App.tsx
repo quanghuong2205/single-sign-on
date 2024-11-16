@@ -1,7 +1,6 @@
 import loadable from '@loadable/component';
 import React, { useLayoutEffect, useState } from 'react';
 import { Route, Router, Routes } from 'react-router-dom';
-import '@/assets/scss/_style.scss';
 import { history } from '@/routes/history';
 
 const DefaultLayout = loadable(() => import('@/layouts/DefaultLayout'));
