@@ -6,7 +6,7 @@ const routes = [
   {
     path: ROUTER_PATHS.auth.url,
     exact: true,
-    name: 'Authentication',
+    name: ROUTER_PATHS.auth.name,
     component: AuthPage,
   },
 ];

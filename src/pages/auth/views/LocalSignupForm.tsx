@@ -35,7 +35,7 @@ const LocalSignUpForm: React.FC<ILocalSignUpFormProps> = ({ onSetFieldValue, err
 
         <FormFiled
           label="Email của bạn"
-          rightButton={{ title: 'Đăng nhập với số điện thoại' }}
+          rightHeaderButton={{ title: 'Đăng nhập với số điện thoại' }}
           placeholder="Địa chỉ email"
           errorText={errors?.email?.message}
           name="email"

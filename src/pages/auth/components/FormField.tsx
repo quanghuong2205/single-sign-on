@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { InputHTMLAttributes, useEffect, useId, useRef, useState } from 'react';
 import classNames from 'classnames';
 
 import { EyeIcon, WarningIcon } from '@/components';
@@ -6,33 +6,28 @@ import fieldStyles from '../scss/form-field.module.scss';
 
 import { listenEvent } from '@/utils';
 
-type IRightButton = {
+type IRightHeaderButton = {
   title: string;
   onClick?: () => void;
 };
 
-interface IFormFieldProps {
-  name: string;
+interface IFormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
-  rightButton?: IRightButton;
+  rightHeaderButton?: IRightHeaderButton;
   errorText?: string;
-  type?: 'text' | 'password';
   isDisabled?: boolean;
-  placeholder?: string;
   isInitialFocus?: boolean;
   onSetFieldValue: (name: string, value: string) => void;
 }
 
 const FormField: React.FC<IFormFieldProps> = ({
-  name,
   label,
-  rightButton,
+  rightHeaderButton,
   errorText,
   isDisabled,
-  placeholder,
-  type = 'text',
   isInitialFocus,
   onSetFieldValue,
+  ...inputProps
 }) => {
   // states
   const fieldId = useId();
@@ -44,8 +39,8 @@ const FormField: React.FC<IFormFieldProps> = ({
   const inputWrapperref = useRef<HTMLDivElement>(null);
 
   // flags
-  const isPasswordField = type === 'password';
-  const isVisibleHeader = label || rightButton;
+  const isPasswordField = inputProps.type === 'password';
+  const isVisibleHeader = label || rightHeaderButton;
 
   // handlers
   const handleTogglePassword = () => setIsVisiblePassword((prev) => !prev);
@@ -78,7 +73,7 @@ const FormField: React.FC<IFormFieldProps> = ({
       {isVisibleHeader && (
         <div className={fieldStyles.header}>
           {label && <label htmlFor={fieldId}>{label}</label>}
-          {rightButton && <button onClick={rightButton?.onClick}>{rightButton.title}</button>}
+          {rightHeaderButton && <button onClick={rightHeaderButton?.onClick}>{rightHeaderButton.title}</button>}
         </div>
       )}
 
@@ -90,16 +85,16 @@ const FormField: React.FC<IFormFieldProps> = ({
         ref={inputWrapperref}
       >
         <input
+          {...inputProps}
           ref={inputRef}
           id={fieldId}
-          name={name}
           autoComplete="off"
           spellCheck="false"
           disabled={isDisabled}
-          type={isVisiblePassword ? 'text' : type}
-          placeholder={placeholder}
-          onChange={(event) => onSetFieldValue(name, event.target.value)}
+          type={isVisiblePassword ? 'text' : inputProps.type}
+          onChange={(event) => onSetFieldValue(inputProps.name!, event.target.value)}
           onFocus={handleFocusInput}
+          className={classNames(isDisabled && 'disabled')}
         />
 
         {!!errorText && !isPasswordField && (
@@ -109,10 +104,7 @@ const FormField: React.FC<IFormFieldProps> = ({
         )}
 
         {isPasswordField && isVisibleEye && (
-          <button
-            className={classNames(fieldStyles.rightIcon, !!errorText && fieldStyles['rightIcon--error'])}
-            onClick={handleTogglePassword}
-          >
+          <button className={fieldStyles.rightIcon} onClick={handleTogglePassword}>
             <EyeIcon isOpen={isVisiblePassword} />
           </button>
         )}

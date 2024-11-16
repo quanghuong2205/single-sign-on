@@ -1,8 +1,16 @@
-interface SignInByEmailRequest {
+interface ILocalSignInRequest {
   email: string;
   password: string;
 }
-interface SignInByEmailResponse extends ApiResponse {}
+interface ILocalSignInResponse extends ApiResponse {}
+
+interface ILocalSignUpRequest {
+  username: string;
+  email: string;
+  otp: number;
+  password: string;
+}
+interface ILocalSignUpResponse extends ApiResponse {}
 
 type AuthModeType = 'SI' | 'SU' | 'FP' | 'RP';
 
