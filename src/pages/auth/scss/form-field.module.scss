@@ -29,24 +29,21 @@
 
 .inputWrap {
   position: relative;
-  background: #fff;
-  border: 1.5px solid #dee3e9;
+  background: var(--white-color);
+  border: 1.5px solid var(--mist-gray-color);
   border-radius: 44px;
   overflow: hidden;
   height: 44px;
   display: flex;
 
   &--error {
-    border-color: #f33a58;
-    color: #f33a58;
-    background-color: #ff00001a;
+    border-color: var(--error-color);
+    color: var(--error-color);
+    background-color: var(--mist-third-color);
   }
 
   &--disable {
-    background: #16182329;
-  }
-  &--disable input {
-    cursor: not-allowed;
+    background: var(--mist-gray-color);
   }
 
   & input {
@@ -57,6 +54,10 @@
     outline: none;
     font-size: 1.4rem;
     background-color: transparent;
+
+    &::placeholder {
+      color: var(--graphite-gray-color);
+    }
   }
 }
 
@@ -66,10 +67,10 @@
   top: 50%;
   right: 18px;
   translate: 0 -50%;
-  color: #666;
+  color: var(--gray-color);
 
   &--error {
-    color: #f33a58;
+    color: var(--error-color);
   }
 
   & svg {
@@ -82,14 +83,14 @@
 .message {
   margin: 8px 0 8px 8px;
   display: block;
-  color: #f33a58;
+  color: var(--error-color);
   font-size: 1.4rem;
   font-weight: 500;
   line-height: 1.5;
   text-align: left;
 
   &--help {
-    color: #02875a;
+    color: var(--gray-color);
     font-style: italic;
   }
 }
@@ -105,13 +106,10 @@
   font-weight: 600;
   white-space: nowrap;
 
-  color: #fff;
-  background: #f05123 linear-gradient(to right bottom, #ff8f26, #f05123);
-
   &--disable {
-    color: #757575;
-    background: #ccc;
-    cursor: not-allowed;
+    color: var(--graphite-gray-color);
+    background: var(--light-gray);
+    cursor: not-allowed !important;
   }
 
   & span {
